@@ -1,6 +1,7 @@
 import cv2
 import time
 import random
+import datetime
 import dlib
 import numpy as np
 from scipy.spatial import distance
@@ -25,8 +26,8 @@ def calculate_EAR(eye):
 
 hog_face_detector = dlib.get_frontal_face_detector()
 dlib_facelandmark = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
-#face_cascade = cv2.CascadeClassifier("haarcascade_frontalface_default.xml") we are not using this hence commented
-#eye_cascade = cv2.CascadeClassifier("haarcascade_eye_tree_eyeglasses.xml") we are not using this hence commented
+face_cascade = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
+eye_cascade = cv2.CascadeClassifier("haarcascade_eye_tree_eyeglasses.xml")
 cap = cv2.VideoCapture(0)
 
 # Initialize variables to keep track of eye closure time
@@ -103,7 +104,7 @@ while cap.isOpened():
         else:
             last_eye_open_time = time.time()
             eye_closed_time=0
-        print(round(eye_closed_time,2))
+        print(round(eye_closed_time,1))
         if(eye_closed_time>threshold and not drowssy):
             drowssy=1
             a=random.randint(10,30)
@@ -126,19 +127,15 @@ while cap.isOpened():
                 else :
                     wrongmsg="Try again"
         else :
-            cv2.putText(img,"Active",(20,100),
-            cv2.FONT_HERSHEY_SIMPLEX,2,(0,255,0),5)
-            cv2.putText(img,"Aspect Ratio:"+str(EAR),(280,30),
+            cv2.putText(img,"Active",(20,50),
             cv2.FONT_HERSHEY_SIMPLEX,1,(0,255,0),4)
-            # cv2.putText(img,"Are you Sleepy?",(20,400),
-            # cv2.FONT_HERSHEY_SIMPLEX,2,(0,0,255),4)
-            # print("Drowsy")
-            # Play sound effect
-            # cv2.imshow("Are you Sleepy", frame)
-            # playsound('alarm.mp3')  # Replace 'alarm.wav' with the path to your sound file
-
+           
+            cv2.putText(img,"EAR:",(480,50),cv2.FONT_HERSHEY_SIMPLEX,1,(0,255,0),4)
+            cv2.putText(img,str(EAR),(550,50),cv2.FONT_HERSHEY_SIMPLEX,1,(0,255,0),4)
+            
        
-
+    datet=str(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+    img=cv2.putText(img,datet,(30,470),cv2.FONT_HERSHEY_DUPLEX,1,(255,255,255),2,2)
     cv2.imshow('img', img)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
