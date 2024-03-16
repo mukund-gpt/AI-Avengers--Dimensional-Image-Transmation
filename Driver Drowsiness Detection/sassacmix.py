@@ -25,8 +25,8 @@ def calculate_EAR(eye):
 
 hog_face_detector = dlib.get_frontal_face_detector()
 dlib_facelandmark = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
-face_cascade = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
-eye_cascade = cv2.CascadeClassifier("haarcascade_eye_tree_eyeglasses.xml")
+#face_cascade = cv2.CascadeClassifier("haarcascade_frontalface_default.xml") we are not using this hence commented
+#eye_cascade = cv2.CascadeClassifier("haarcascade_eye_tree_eyeglasses.xml") we are not using this hence commented
 cap = cv2.VideoCapture(0)
 
 # Initialize variables to keep track of eye closure time
