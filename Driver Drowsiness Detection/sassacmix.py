@@ -26,14 +26,11 @@ def calculate_EAR(eye):
 
 hog_face_detector = dlib.get_frontal_face_detector()
 dlib_facelandmark = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
-face_cascade = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
-eye_cascade = cv2.CascadeClassifier("haarcascade_eye_tree_eyeglasses.xml")
 cap = cv2.VideoCapture(0)
 
 # Initialize variables to keep track of eye closure time
 eye_closed_time = 0
 last_eye_open_time = time.time()
-total_eye_closed_time=0
 threshold=5
 facepresent=0
 counter=0
@@ -50,14 +47,15 @@ while cap.isOpened():
     faces = hog_face_detector(gray)
     if(len(faces)>0):
         counter=0
-    if(len(faces)>0 and facepresent==0):
-        last_eye_open_time = time.time()
-        facepresent=1
     else :
         counter+=1
         if(counter>=10):
             facepresent=0
             cv2.putText(img,"No Face Detected", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 3, cv2.LINE_AA)
+
+    if(len(faces)>0 and facepresent==0):
+        last_eye_open_time = time.time()
+        facepresent=1
 
     for face in faces:
         face_landmarks = dlib_facelandmark(gray, face)
